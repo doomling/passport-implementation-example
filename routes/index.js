@@ -7,9 +7,17 @@ const LoginService = require("./../services/loginService");
 const LoginInstance = new LoginController(new LoginService());
 const passport = require("passport");
 
+const UserController = require("./../controllers/userController");
+const UserService = require("./../services/userService");
+const UserInstance = new UserController(new UserService());
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.send("hola");
+});
+
+router.post("/create", function (req, res) {
+  UserInstance.create(req, res);
 });
 
 router.post("/login", passport.authenticate("local"), function (
