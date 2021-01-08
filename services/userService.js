@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 
 class UserService {
   create(data) {
-    bcrypt.hash(data.password, 10).then(hash => {
+    
+    return bcrypt.hash(data.password, 10).then(hash => {
       data.password = hash;
       const newUser = new User(data);
 

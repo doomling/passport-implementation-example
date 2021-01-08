@@ -4,7 +4,7 @@ const LoginService = require("./services/loginService");
 const LoginInstance = new LoginService();
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require("passport");
-const bcrypt = require("bcrypt");
+const brcrypt = require("bcrypt");
 
 passport.use(
   new LocalStrategy(
@@ -19,11 +19,13 @@ passport.use(
         return cb(null, false);
       }
 
-      bcrypt.hash(userData.password, 10).then(hash => {
-        data.password = hash;
-        bcrypt.compare(password, hash);
+      const result = await brcrypt.compare(password, userData.password);
+
+      console.log(result, userData.password, password);
+
+      if (!result) {
         return cb(null, false);
-      });
+      }
 
       const data = {
         _id: userData._id,
@@ -40,10 +42,7 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((user, cb) => {
   LoginInstance.logUser({ name: user }).then(userData => {
-    const data = {
-      _id: userData._id,
-      name: userData.name
-    };
-    cb(null, data);
+    console.log(userData);
+    cb(null, userData);
   });
 });

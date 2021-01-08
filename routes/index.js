@@ -11,9 +11,17 @@ const UserController = require("./../controllers/userController");
 const UserService = require("./../services/userService");
 const UserInstance = new UserController(new UserService());
 
+const isAdmin = require("./../utils/checkAdmin");
+
+console.log(isAdmin);
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.send("hola");
+});
+
+router.get("/onlyadmins", isAdmin, function (req, res, next) {
+  res.send("solo un admin puede ver esta ruta");
 });
 
 router.post("/create", function (req, res) {
